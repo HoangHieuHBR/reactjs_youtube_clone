@@ -3,15 +3,18 @@ import { Box, Stack, Typography } from "@mui/material";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 import { Sidebar, Videos } from "./";
 
+import { categories } from "../utils/const";
+
 const Feed = () => {
-  const [selectedCategory, setSelectedCategory] = useState("New");
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [videos, setVideos] = useState(null);
 
   useEffect(() => {
     setVideos(null);
 
-    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`)
-    .then((data) => setVideos(data.items))
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory.name}`).then((data) =>
+      setVideos(data.items)
+    );
   }, [selectedCategory]);
 
   return (
@@ -36,7 +39,7 @@ const Feed = () => {
           },
         }}
       >
-        <Sidebar 
+        <Sidebar
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
@@ -68,7 +71,7 @@ const Feed = () => {
             color: "white",
           }}
         >
-          {selectedCategory}{" "}
+          {selectedCategory.icon} {selectedCategory.name}{" "}
           <span
             style={{
               color: "#F31503",
